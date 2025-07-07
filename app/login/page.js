@@ -1,9 +1,14 @@
 'use client'
 import { LoginAction } from "./loginAction";
+import { useFormState } from "react-dom";
 
 export default function Login() {
+  const initState = {
+    message: ''
+  };
+  const [state, stateLoginAciton] = useFormState(LoginAction, initState)
   return (
-    <form action={LoginAction}>
+    <form action={stateLoginAciton}>
       <div style={{ marginBottom: "12px" }}>
         Email{" "}
         <input 
@@ -29,6 +34,9 @@ export default function Login() {
             width: "250px",
           }}
         />
+      </div>
+      <div>
+        Message : {state.message}
       </div>
       <div>
         <button 
