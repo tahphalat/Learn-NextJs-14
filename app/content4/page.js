@@ -13,29 +13,37 @@ async function getBlogs() {
 
 export default function Content4() {
   const [blogState, setBlogState] = useState([]);
+  const [loading,setLoading] = useState(true);
 
   const FetchData = async () => {
     try {
       const result = await getBlogs();
-      setBlogState(result);
     } catch (err) {
       console.log("err", error);
     }
   };
 
   useEffect(() => {
-    FetchData();
+    FetchData()
+    .then((result)=>setBlogState(result))
+    .catch((error)=>console.log('error',error))
+    .finally(()=> setLoading(false))
   }, []);
   console.log("blogState", blogState);
 
+  if(loading) return <div>Loading...</div>
+
   return (
-    <div>
-      {blogState.map((blog, index) => (
-        <div key={index}>
-          {blog.name}
-          {blog.id}
+    
+    <Suspense fallback={<Loading/>}>
+        <div>
+        {blogState.map((blog, index) => (
+            <div key={index}>
+            {blog.name}
+            {blog.id}
+            </div>
+        ))}
         </div>
-      ))}
-    </div>
+    </Suspense>
   );
 }
