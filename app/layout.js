@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable react/react-in-jsx-scope */
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -22,8 +24,9 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div>this is layout 1</div>
+        <div>Header</div>
         {children}
+        <div>Footer</div>
       </body>
     </html>
   );
