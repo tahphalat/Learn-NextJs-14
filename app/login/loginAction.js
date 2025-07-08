@@ -1,14 +1,15 @@
 'use server'
 import { SignJWT, importJWK } from 'jose'
+import { redirect } from 'next/navigation'
 import { cookies } from 'next/headers'
 
 export async function LoginAction(prevState,FormData){
     const email = FormData.get('email')
     const password = FormData.get('password')
     
-    if(email != "a" || password != "1234"){
-        return {message : 'Login Fail'} 
-    }
+    // if(email != "a" || password != "1234"){
+    //     return {message : 'Login Fail'} 
+    // }
     
 
     //login pass
@@ -29,7 +30,8 @@ export async function LoginAction(prevState,FormData){
     console.log(token)
     console.log("hello")
 
-      cookies().set('tokenNaja', token)
+    const cookieStore = await cookies();
+    cookieStore.set('tokenNaja', token);
 
-    return {message: 'Login Success'}
+      redirect('/manage/blog')
 }
