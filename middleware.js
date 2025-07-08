@@ -11,9 +11,17 @@ export async function middleware(request) {
     };
     const secretKey = await importJWK(secretJWK, "HS256");
     const { payload } = await jwtVerify(token, secretKey);
-    console.log(token);
-    console.log(payload);
-    return NextResponse.next();
+    
+    // นอกจากความสามารถในการกั้น access middleware สามารถทำการส่งค่าไปยังหน้าเว็บด้วย requestHeader
+    const requestHeader = new Headers(request.headers);
+    requestHeader.set("Authorization", JSON.stringify({email: payload.email}));
+    const response = NextResponse.next({
+      request: {
+        headers: requestHeader,
+      },
+    });
+
+    return response;
   } catch (error) {
     return NextResponse.redirect(new URL("/", request.url));
   }
